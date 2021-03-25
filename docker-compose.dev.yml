@@ -1,0 +1,62 @@
+version: '3.9'
+
+
+services:
+
+  laravel_app:
+    container_name: laravel_app
+    volumes:
+      - ./docker/php/config/php.dev.ini:/usr/local/etc/php/php.ini
+    networks:
+      - laravel-network
+
+  laravel_web:
+    container_name: laravel_web
+    extra_hosts:
+      - laravel-template.local:127.0.0.1
+    volumes:
+      - ./docker/nginx/hosts/virtualhost.dev.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - laravel-network
+
+  laravel_db:
+    container_name: laravel_db
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    networks:
+      - laravel-network
+
+  laravel_memory:
+    container_name: laravel_memory
+    networks:
+      - laravel-network
+
+  laravel_mail:
+    container_name: laravel_mail
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - laravel-network
+
+  laravel_queue:
+    container_name: laravel_queue
+    networks:
+      - laravel-network
+
+
+secrets:
+  server.crt:
+    file: $HOME/GitHub/self-signed-certificates/certs/localhost.crt
+  server.key:
+    file: $HOME/GitHub/self-signed-certificates/certs/localhost.key
+
+
+networks:
+  laravel-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
