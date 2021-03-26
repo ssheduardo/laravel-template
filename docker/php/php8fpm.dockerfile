@@ -7,6 +7,7 @@ ENV GROUP_ID 1000
 ENV PHP_IDE_CONFIG="serverName=dockerHost"
 ENV COMPOSER_HOME=/var/www/docker/cache/composer
 ENV npm_config_cache=/var/www/docker/cache/npm
+ENV NO_UPDATE_NOTIFIER=1
 
 RUN apt-get update && apt-get install -y \
     curl \
