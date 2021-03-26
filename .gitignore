@@ -13,3 +13,7 @@ npm-debug.log
 yarn-error.log
 .idea
 /docker/cache
+.config
+/public/js
+/public/css
+/public/mix-manifest.json
